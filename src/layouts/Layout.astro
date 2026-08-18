@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://screenrecord.github.io/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://screenrecord.github.io/" />
+    <meta property="og:title" content="Free Online Screen & Audio Recorder — No Install" />
+    <meta property="og:description" content="Capture video and audio directly in your browser with zero extensions, zero installs, and 100% local privacy." />
+    <meta property="og:image" content="https://res.cloudinary.com/dpx6w78bt/image/upload/f_auto/q_auto/v1786342039/Online_Tool_rc1ybr.png" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://screenrecord.github.io/" />
+    <meta name="twitter:title" content="Free Online Screen & Audio Recorder — No Install" />
+    <meta name="twitter:description" content="Capture video and audio directly in your browser with zero extensions, zero installs, and 100% local privacy." />
+    <meta name="twitter:image" content="https://res.cloudinary.com/dpx6w78bt/image/upload/f_auto/q_auto/v1786342039/Online_Tool_rc1ybr.png" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+      <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2" aria-label="ScreenRecord Home">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-rose-500"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          <span class="font-bold text-xl tracking-tight">ScreenRecord</span>
+        </a>
+        <div class="hidden sm:block">
+          <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 border border-emerald-200">
+            100% Private — Runs locally in RAM
+          </span>
+        </div>
+      </div>
+    </header>
+    
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-slate-500 text-sm">
+      <div class="max-w-4xl mx-auto px-4">
+        <p>&copy; {new Date().getFullYear()} ScreenRecord. All processing happens locally in your browser.</p>
+        <p class="mt-2 text-xs">No video or audio is ever uploaded to any server.</p>
+      </div>
+    </footer>
+  </body>
+</html>
