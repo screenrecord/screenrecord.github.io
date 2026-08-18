@@ -30,6 +30,16 @@ const { title, description } = Astro.props;
     <meta name="twitter:title" content="Free Online Screen & Audio Recorder — No Install" />
     <meta name="twitter:description" content="Capture video and audio directly in your browser with zero extensions, zero installs, and 100% local privacy." />
     <meta name="twitter:image" content="https://res.cloudinary.com/dpx6w78bt/image/upload/f_auto/q_auto/v1786342039/Online_Tool_rc1ybr.png" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7D2B2M66C6" is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-7D2B2M66C6');
+    </script>
   </head>
   <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans">
     <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
