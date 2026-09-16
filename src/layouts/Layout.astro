@@ -1,11 +1,17 @@
 ---
 import '../styles/global.css';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import LanguagePicker from '../components/LanguagePicker.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,21 +21,31 @@ const { title, description } = Astro.props;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://screenrecord.github.io/" />
+    <link rel="canonical" href={`https://screenrecord.github.io${Astro.url.pathname}`} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://screenrecord.github.io/" />
-    <meta property="og:title" content="Free Online Screen & Audio Recorder — No Install" />
-    <meta property="og:description" content="Capture video and audio directly in your browser with zero extensions, zero installs, and 100% local privacy." />
+    <meta property="og:url" content={`https://screenrecord.github.io${Astro.url.pathname}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:image" content="https://res.cloudinary.com/dpx6w78bt/image/upload/f_auto/q_auto/v1786342039/Online_Tool_rc1ybr.png" />
+    <meta property="og:locale" content={lang} />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://screenrecord.github.io/" />
-    <meta name="twitter:title" content="Free Online Screen & Audio Recorder — No Install" />
-    <meta name="twitter:description" content="Capture video and audio directly in your browser with zero extensions, zero installs, and 100% local privacy." />
+    <meta name="twitter:url" content={`https://screenrecord.github.io${Astro.url.pathname}`} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://res.cloudinary.com/dpx6w78bt/image/upload/f_auto/q_auto/v1786342039/Online_Tool_rc1ybr.png" />
+
+    <!-- Anti-FOUC Script for Theme -->
+    <script is:inline>
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7D2B2M66C6" is:inline></script>
@@ -41,17 +57,19 @@ const { title, description } = Astro.props;
       gtag('config', 'G-7D2B2M66C6');
     </script>
   </head>
-  <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans">
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+  <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10">
       <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2" aria-label="ScreenRecord Home">
+        <a href={lang === 'en' ? '/' : `/${lang}/`} class="flex items-center gap-2" aria-label="ScreenRecord Home">
           <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-rose-500"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-          <span class="font-bold text-xl tracking-tight">ScreenRecord</span>
+          <span class="font-bold text-xl tracking-tight hidden sm:block">ScreenRecord</span>
         </a>
-        <div>
-          <a href="https://buymeacoffee.com/kisharadilz" target="_blank" rel="noopener noreferrer" aria-label="Support the Developer - Buy me a coffee" class="group inline-flex items-center justify-center gap-2 rounded-full bg-[#FFDD00] hover:bg-[#FFEA4C] p-2.5 sm:px-3.5 sm:py-1.5 text-sm font-bold text-slate-900 border border-yellow-400 transition-all shadow-sm hover:shadow hover:-translate-y-0.5">
+        <div class="flex items-center gap-3">
+          <LanguagePicker />
+          <ThemeToggle />
+          <a href="https://buymeacoffee.com/kisharadilz" target="_blank" rel="noopener noreferrer" aria-label="Support the Developer - Buy me a coffee" class="group hidden md:inline-flex items-center justify-center gap-2 rounded-full bg-[#FFDD00] hover:bg-[#FFEA4C] p-2.5 sm:px-3.5 sm:py-1.5 text-sm font-bold text-slate-900 border border-yellow-400 transition-all shadow-sm hover:shadow hover:-translate-y-0.5">
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-900 group-hover:rotate-12 transition-transform duration-300"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
-            <span class="hidden sm:inline">Support the Developer</span>
+            <span class="hidden sm:inline">{t('nav.support')}</span>
           </a>
         </div>
       </div>
@@ -61,10 +79,10 @@ const { title, description } = Astro.props;
       <slot />
     </main>
 
-    <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-slate-500 text-sm">
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-12 py-8 text-center text-slate-500 dark:text-slate-400 text-sm">
       <div class="max-w-4xl mx-auto px-4">
-        <p>&copy; {new Date().getFullYear()} ScreenRecord. All processing happens locally in your browser.</p>
-        <p class="mt-2 text-xs">No video or audio is ever uploaded to any server.</p>
+        <p>&copy; {new Date().getFullYear()} {t('footer.copy')}</p>
+        <p class="mt-2 text-xs">{t('footer.privacy')}</p>
       </div>
     </footer>
   </body>

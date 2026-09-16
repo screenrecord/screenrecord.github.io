@@ -7,14 +7,14 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-const MODES = [
-  { id: 'screen', label: 'Screen', icon: Monitor, desc: 'Capture display only' },
-  { id: 'screen_mic', label: 'Screen + Mic', icon: Mic, desc: 'Display with voiceover' },
-  { id: 'webcam', label: 'Webcam', icon: Camera, desc: 'Record yourself' },
-  { id: 'audio_only', label: 'Audio Only', icon: Volume2, desc: 'Voice memos' },
-];
+export default function ScreenRecorder({ dict }) {
+  const MODES = [
+    { id: 'screen', label: dict.screen, icon: Monitor, desc: dict.screen_desc },
+    { id: 'screen_mic', label: dict.screen_mic, icon: Mic, desc: dict.screen_mic_desc },
+    { id: 'webcam', label: dict.webcam, icon: Camera, desc: dict.webcam_desc },
+    { id: 'audio_only', label: dict.audio_only, icon: Volume2, desc: dict.audio_only_desc },
+  ];
 
-export default function ScreenRecorder() {
   const [mode, setMode] = useState('screen');
   const [status, setStatus] = useState('idle'); // idle, recording, paused, preview, error
   const [errorMsg, setErrorMsg] = useState('');
@@ -202,13 +202,13 @@ export default function ScreenRecorder() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 bg-white rounded-2xl shadow-sm border border-slate-200">
+    <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
       
       {/* Configuration / Idle State */}
       {status === 'idle' && (
         <div className="space-y-8 animate-in fade-in zoom-in duration-300">
           <div>
-            <h2 className="text-xl font-semibold mb-4 text-slate-800">Choose Recording Mode</h2>
+            <h2 className="text-xl font-semibold mb-4 text-slate-800 dark:text-white">{dict.choose}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {MODES.map((m) => {
                 const Icon = m.icon;
@@ -220,16 +220,16 @@ export default function ScreenRecorder() {
                     className={cn(
                       "flex items-start gap-4 p-4 rounded-xl border text-left transition-all",
                       isSelected 
-                        ? "border-rose-500 bg-rose-50 ring-1 ring-rose-500" 
-                        : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                        ? "border-rose-500 bg-rose-50 dark:bg-rose-900/30 ring-1 ring-rose-500" 
+                        : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/50"
                     )}
                   >
-                    <div className={cn("p-2 rounded-lg", isSelected ? "bg-rose-100 text-rose-600" : "bg-slate-100 text-slate-600")}>
+                    <div className={cn("p-2 rounded-lg", isSelected ? "bg-rose-100 dark:bg-rose-500 text-rose-600 dark:text-white" : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300")}>
                       <Icon size={24} />
                     </div>
                     <div>
-                      <h3 className="font-medium text-slate-900">{m.label}</h3>
-                      <p className="text-sm text-slate-500 mt-1">{m.desc}</p>
+                      <h3 className="font-medium text-slate-900 dark:text-white">{m.label}</h3>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{m.desc}</p>
                     </div>
                   </button>
                 )
@@ -238,7 +238,7 @@ export default function ScreenRecorder() {
           </div>
 
           {errorMsg && (
-            <div className="flex items-center gap-2 p-4 text-red-700 bg-red-50 rounded-xl border border-red-100">
+            <div className="flex items-center gap-2 p-4 text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-xl border border-red-100 dark:border-red-900/50">
               <AlertCircle size={20} />
               <p className="text-sm">{errorMsg}</p>
             </div>
@@ -251,7 +251,7 @@ export default function ScreenRecorder() {
               className="bg-rose-500 hover:bg-rose-600 text-white font-medium py-3 px-8 rounded-full text-lg shadow-sm transition-all hover:shadow-md flex items-center gap-2"
             >
               <div aria-hidden="true" className="w-3 h-3 rounded-full bg-white"></div>
-              Start Recording
+              {dict.start}
             </button>
           </div>
         </div>
@@ -260,30 +260,30 @@ export default function ScreenRecorder() {
       {/* Active Recording State */}
       {(status === 'recording' || status === 'paused') && (
         <div className="space-y-6 animate-in fade-in duration-300">
-          <div className="flex flex-col sm:flex-row items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-200 gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 gap-4">
             <div className="flex items-center gap-4">
               <div className={cn("w-4 h-4 rounded-full", status === 'recording' ? "bg-rose-500 animate-pulse" : "bg-amber-500")}></div>
-              <span className="font-mono text-2xl font-semibold text-slate-800">
+              <span className="font-mono text-2xl font-semibold text-slate-800 dark:text-white">
                 {formatTime(timeMs)}
               </span>
-              <span className="text-slate-500 font-medium">
-                {status === 'recording' ? 'Recording...' : 'Paused'}
+              <span className="text-slate-500 dark:text-slate-400 font-medium">
+                {status === 'recording' ? dict.recording : dict.paused}
               </span>
             </div>
 
             <div className="flex items-center gap-3">
               {status === 'recording' ? (
-                <button aria-label="Pause Recording" onClick={pauseRecording} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Pause aria-hidden="true" size={18} /> <span className="hidden sm:inline">Pause</span>
+                <button aria-label="Pause Recording" onClick={pauseRecording} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                  <Pause aria-hidden="true" size={18} /> <span className="hidden sm:inline">{dict.pause}</span>
                 </button>
               ) : (
-                <button aria-label="Resume Recording" onClick={resumeRecording} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Play aria-hidden="true" size={18} /> <span className="hidden sm:inline">Resume</span>
+                <button aria-label="Resume Recording" onClick={resumeRecording} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                  <Play aria-hidden="true" size={18} /> <span className="hidden sm:inline">{dict.resume}</span>
                 </button>
               )}
               
-              <button aria-label="Stop Recording" onClick={stopRecording} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors">
-                <Square aria-hidden="true" size={18} /> Stop
+              <button aria-label="Stop Recording" onClick={stopRecording} className="flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-rose-600 text-white rounded-lg hover:bg-slate-800 dark:hover:bg-rose-700 transition-colors">
+                <Square aria-hidden="true" size={18} /> {dict.stop}
               </button>
             </div>
           </div>
@@ -300,14 +300,14 @@ export default function ScreenRecorder() {
                 playsInline
               />
               <div className="absolute top-4 left-4 bg-black/50 text-white/90 px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-sm flex items-center gap-2">
-                <Video aria-hidden="true" size={14} /> Live Preview
+                <Video aria-hidden="true" size={14} /> {dict.preview}
               </div>
             </div>
           )}
           {mode === 'audio_only' && (
-            <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-xl border border-slate-200">
+            <div className="flex flex-col items-center justify-center py-20 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700">
               <Volume2 size={48} className="text-rose-400 mb-4 animate-pulse" />
-              <p className="text-slate-600 font-medium">Recording Audio...</p>
+              <p className="text-slate-600 dark:text-slate-400 font-medium">{dict.audio}</p>
             </div>
           )}
         </div>
@@ -316,9 +316,9 @@ export default function ScreenRecorder() {
       {/* Preview & Download State */}
       {status === 'preview' && recordedUrl && (
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
-          <div className="rounded-xl overflow-hidden bg-slate-900 shadow-sm border border-slate-200">
+          <div className="rounded-xl overflow-hidden bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-700">
             {mode === 'audio_only' ? (
-              <div className="p-8 flex items-center justify-center bg-slate-50">
+              <div className="p-8 flex items-center justify-center bg-slate-50 dark:bg-slate-900">
                 <audio aria-label="Recorded Audio Playback" ref={playbackRef} src={recordedUrl} controls className="w-full max-w-md" />
               </div>
             ) : (
@@ -332,23 +332,23 @@ export default function ScreenRecorder() {
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-            <div className="text-slate-600">
-              <span className="font-medium text-slate-900">Duration:</span> {formatTime(timeMs)}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700">
+            <div className="text-slate-600 dark:text-slate-300">
+              <span className="font-medium text-slate-900 dark:text-white">{dict.duration}</span> {formatTime(timeMs)}
             </div>
             <div className="flex gap-3 w-full sm:w-auto">
               <button 
                 onClick={recordAgain}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors font-medium"
               >
-                <RefreshCw size={18} /> Record Again
+                <RefreshCw size={18} /> {dict.again}
               </button>
               <a 
                 href={recordedUrl}
                 download={`recording_${new Date().getTime()}.${mode === 'audio_only' ? 'webm' : 'webm'}`}
                 className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm"
               >
-                <Download size={18} /> Download File
+                <Download size={18} /> {dict.download}
               </a>
             </div>
           </div>

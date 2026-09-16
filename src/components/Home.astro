@@ -1,0 +1,195 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScreenRecorder from '../components/ScreenRecorder';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ScreenRecord Web Tool",
+    "applicationCategory": "MultimediaApplication, VideoEditingApplication",
+    "operatingSystem": "Any (Web Browser with MediaRecorder API)",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": t('faq.1.q'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.1.a')
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t('faq.2.q'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.2.a')
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t('faq.3.q'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.3.a')
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t('faq.4.q'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.4.a')
+        }
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://screenrecord.github.io" + translatePath('/')
+      }
+    ]
+  }
+];
+
+const faqs = [
+  { q: t('faq.1.q'), a: t('faq.1.a') },
+  { q: t('faq.2.q'), a: t('faq.2.a') },
+  { q: t('faq.3.q'), a: t('faq.3.a') },
+  { q: t('faq.4.q'), a: t('faq.4.a') }
+];
+
+const dict = {
+  screen: t('recorder.mode.screen'),
+  screen_desc: t('recorder.mode.screen.desc'),
+  screen_mic: t('recorder.mode.screen_mic'),
+  screen_mic_desc: t('recorder.mode.screen_mic.desc'),
+  webcam: t('recorder.mode.webcam'),
+  webcam_desc: t('recorder.mode.webcam.desc'),
+  audio_only: t('recorder.mode.audio_only'),
+  audio_only_desc: t('recorder.mode.audio_only.desc'),
+  choose: t('recorder.choose'),
+  start: t('recorder.start'),
+  recording: t('recorder.recording'),
+  paused: t('recorder.paused'),
+  pause: t('recorder.pause'),
+  resume: t('recorder.resume'),
+  stop: t('recorder.stop'),
+  preview: t('recorder.preview'),
+  audio: t('recorder.audio'),
+  duration: t('recorder.duration'),
+  again: t('recorder.again'),
+  download: t('recorder.download')
+};
+---
+
+<Layout 
+  title={t('hero.title') + " | Record Screen, Webcam & Audio Privately"}
+  description={t('hero.subtitle')}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+  <section class="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-6">
+        {t('hero.title')}
+      </h1>
+      <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto">
+        {t('hero.subtitle')}
+      </p>
+      
+      <ScreenRecorder client:load dict={dict} />
+    </div>
+  </section>
+
+  <section class="py-16 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="grid md:grid-cols-2 gap-12">
+        
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">{t('steps.title')}</h2>
+          <ol class="space-y-4">
+            <li class="flex gap-4">
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">1</span>
+              <p class="text-slate-600 dark:text-slate-300 pt-1">{t('steps.1')}</p>
+            </li>
+            <li class="flex gap-4">
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">2</span>
+              <p class="text-slate-600 dark:text-slate-300 pt-1">{t('steps.2')}</p>
+            </li>
+            <li class="flex gap-4">
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">3</span>
+              <p class="text-slate-600 dark:text-slate-300 pt-1">{t('steps.3')}</p>
+            </li>
+            <li class="flex gap-4">
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">4</span>
+              <p class="text-slate-600 dark:text-slate-300 pt-1">{t('steps.4')}</p>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">{t('features.title')}</h2>
+          <ul class="space-y-4">
+            <li class="flex gap-3">
+              <svg aria-hidden="true" class="w-6 h-6 text-emerald-500 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <div>
+                <strong class="block text-slate-900 dark:text-white">{t('features.1.title')}</strong>
+                <p class="text-slate-600 dark:text-slate-300 text-sm">{t('features.1.desc')}</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <svg aria-hidden="true" class="w-6 h-6 text-emerald-500 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <div>
+                <strong class="block text-slate-900 dark:text-white">{t('features.2.title')}</strong>
+                <p class="text-slate-600 dark:text-slate-300 text-sm">{t('features.2.desc')}</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <svg aria-hidden="true" class="w-6 h-6 text-emerald-500 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <div>
+                <strong class="block text-slate-900 dark:text-white">{t('features.3.title')}</strong>
+                <p class="text-slate-600 dark:text-slate-300 text-sm">{t('features.3.desc')}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center text-slate-900 dark:text-white mb-10">{t('faq.title')}</h2>
+      <div class="space-y-6">
+        {faqs.map(faq => (
+          <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{faq.q}</h3>
+            <p class="text-slate-600 dark:text-slate-300">{faq.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
