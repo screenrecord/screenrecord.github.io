@@ -81,8 +81,15 @@ const { title, description } = Astro.props;
 
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-12 py-8 text-center text-slate-500 dark:text-slate-400 text-sm">
       <div class="max-w-4xl mx-auto px-4">
-        <p>&copy; {new Date().getFullYear()} {t('footer.copy')}</p>
-        <p class="mt-2 text-xs">{t('footer.privacy')}</p>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+          <div class="text-center md:text-left">
+            <p>&copy; {new Date().getFullYear()} {t('footer.copy')}</p>
+            <p class="mt-2 text-xs">{t('footer.privacy')}</p>
+          </div>
+          <div class="flex gap-6 text-sm font-medium">
+            <a href="/how-to-record-screen-without-software" class="hover:text-rose-500 transition-colors">How to Record Screen Without Software</a>
+          </div>
+        </div>
       </div>
     </footer>
   </body>
