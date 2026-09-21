@@ -1,11 +1,12 @@
 ---
 import '../styles/global.css';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
 import LanguagePicker from '../components/LanguagePicker.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
 const { title, description } = Astro.props;
 ---
@@ -87,7 +88,9 @@ const { title, description } = Astro.props;
             <p class="mt-2 text-xs">{t('footer.privacy')}</p>
           </div>
           <div class="flex gap-6 text-sm font-medium">
-            <a href="/how-to-record-screen-without-software" class="hover:text-rose-500 transition-colors">How to Record Screen Without Software</a>
+            <a href={translatePath('/how-to-record-screen-without-software')} class="hover:text-rose-500 transition-colors">
+              {t('seo.link')}
+            </a>
           </div>
         </div>
       </div>

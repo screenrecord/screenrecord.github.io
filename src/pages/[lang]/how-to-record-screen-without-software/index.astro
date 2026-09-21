@@ -1,0 +1,12 @@
+---
+import { languages } from '../../../i18n/ui';
+import HowToArticle from '../../../components/HowToArticle.astro';
+
+export function getStaticPaths() {
+  return Object.keys(languages)
+    .filter(lang => lang !== 'en')
+    .map(lang => ({ params: { lang } }));
+}
+---
+
+<HowToArticle />

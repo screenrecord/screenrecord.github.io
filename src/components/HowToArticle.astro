@@ -1,0 +1,104 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const title = t('seo.title');
+const description = t('seo.desc');
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": t('seo.h1'),
+  "description": description,
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": t('seo.s2.1.h3'),
+      "text": t('seo.s2.1.p')
+    },
+    {
+      "@type": "HowToStep",
+      "name": t('seo.s2.2.h3'),
+      "text": t('seo.s2.2.p')
+    },
+    {
+      "@type": "HowToStep",
+      "name": t('seo.s2.3.h3'),
+      "text": t('seo.s2.3.p')
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  
+  <main class="max-w-3xl mx-auto px-4 py-12 sm:py-20">
+    <article class="bg-white dark:bg-slate-800 p-8 sm:p-12 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
+      
+      <header class="mb-10 border-b border-slate-200 dark:border-slate-700 pb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+          {t('seo.h1')}
+        </h1>
+        <p class="text-lg text-slate-600 dark:text-slate-300">
+          {t('seo.sub')}
+        </p>
+      </header>
+
+      <div class="space-y-8 text-slate-700 dark:text-slate-300 leading-relaxed">
+        
+        <section>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">{t('seo.s1.h2')}</h2>
+          <p class="mb-4">{t('seo.s1.p1')}</p>
+          <p>{t('seo.s1.p2')}</p>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">{t('seo.s2.h2')}</h2>
+          
+          <div class="space-y-6 mt-6">
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-lg">1</div>
+              <div>
+                <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-2">{t('seo.s2.1.h3')}</h3>
+                <p>{t('seo.s2.1.p')}</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-lg">2</div>
+              <div>
+                <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-2">{t('seo.s2.2.h3')}</h3>
+                <p>{t('seo.s2.2.p')}</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-lg">3</div>
+              <div>
+                <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-2">{t('seo.s2.3.h3')}</h3>
+                <p>{t('seo.s2.3.p')}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl mt-10">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">{t('seo.s3.h2')}</h2>
+          <p>{t('seo.s3.p')}</p>
+        </section>
+
+        <div class="mt-12 text-center pt-8 border-t border-slate-200 dark:border-slate-700">
+          <a href={translatePath('/')} class="inline-flex items-center justify-center bg-rose-500 hover:bg-rose-600 text-white font-medium py-3 px-8 rounded-full text-lg shadow-sm transition-all hover:shadow-md">
+            {t('seo.cta')}
+          </a>
+        </div>
+
+      </div>
+    </article>
+  </main>
+</Layout>

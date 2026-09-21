@@ -1,4 +1,5 @@
 import { ui, defaultLang } from './ui';
+import { seoUi } from './seo';
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');
@@ -7,8 +8,10 @@ export function getLangFromUrl(url: URL) {
 }
 
 export function useTranslations(lang: keyof typeof ui) {
-  return function t(key: keyof typeof ui[typeof defaultLang]) {
-    return ui[lang][key] || ui[defaultLang][key];
+  return function t(key: string) {
+    const combined = { ...ui[lang], ...seoUi[lang] };
+    const combinedDefault = { ...ui[defaultLang], ...seoUi[defaultLang] };
+    return combined[key] || combinedDefault[key];
   }
 }
 
