@@ -54,4 +54,4 @@ npm run build
 ```
 
 ## ☕ Support
-If you find this tool helpful, consider supporting the developer via [Buy Me a Coffee](https://buymeacoffee.com/kisharadilz).
+If you find this tool helpful, consider supporting the developer via [Ko-fi](https://ko-fi.com/kishara).
