@@ -54,4 +54,4 @@ npm run build
 ```
 
 ## ☕ Support
-If you find this tool helpful, consider supporting the developer via [Ko-fi](https://ko-fi.com/kishara).
+If you find this tool helpful, consider supporting the developer via [Gumroad](https://kisharadilshan.gumroad.com/coffee).
